@@ -2,13 +2,16 @@ package invoicearraylist;
 
 import static java.lang.Math.floor;
 import static java.lang.Math.round;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 
 public class Factura {
     private int numero;
     private Cliente cliente;
     private Fecha fecha;
-    private LineaFactura[] lineas = new LineaFactura[10];
+    //private LineaFactura[] lineas = new LineaFactura[10];
+    ArrayList<LineaFactura> lineas = new ArrayList<LineaFactura>();
     
     Textos texto = new Textos();
     
@@ -21,11 +24,11 @@ public class Factura {
     public int getNumero(){return this.numero;}
     public Cliente getCliente(){return this.cliente;}
     public Fecha getFecha(){return this.fecha;}
-    public LineaFactura[] getLineas(){return this.lineas;}
+    public ArrayList<LineaFactura> getLineas(){return this.lineas;}
     
     public void setCliente(Cliente cliente){this.cliente=cliente;}
     public void setFecha(Fecha fecha){this.fecha=fecha;}
-    public void setLineaFactura(LineaFactura[] lineas){this.lineas=lineas;}
+    public void setLineaFactura(ArrayList<LineaFactura> lineas){this.lineas=lineas;}
     
     /*
     nuevaLinea(LineaFactura lf): Añadir una línea a la factura. En caso
@@ -33,7 +36,15 @@ public class Factura {
     que la ha insertado. En caso contrario (vector lleno) debe devolver -
     1. 
     */
-    public int nuevaLinea(LineaFactura lf){
+    
+    Iterator<LineaFactura> it = lineas.iterator();
+    LineaFactura e = null;
+    
+    while (lineas.hasNext()) {
+            e = it.next();
+            System.out.println(e.);
+    }
+    public int nuevaLinea(ArrayList<LineaFactura> lf){
         int vector=-1;
         int i,j;
         boolean insertado=false;
