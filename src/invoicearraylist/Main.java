@@ -1,5 +1,7 @@
 package invoicearraylist;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Scanner;
 
@@ -40,7 +42,7 @@ public class Main {
         Factura factura = new Factura(1,cliente,hoy);
         
         Producto producto1 = new Producto(proCodigo1,proNombre1,proDescripcion1,200);
-        LineaFactura linea1 = new LineaFactura(producto1,2,1);
+        ArrayList<LineaFactura> linea1 = new ArrayList<LineaFactura>(Arrays.asList(producto1,2,1));
         factura.nuevaLinea(linea1);
                 
         Producto producto2 = new Producto(proCodigo2,proNombre2,proDescripcion2,100);
