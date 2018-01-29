@@ -40,9 +40,9 @@ public class Main {
         Cliente cliente = new Cliente(nif,nombre,direccion,telefono);
       
         Factura factura = new Factura(1,cliente,hoy);
-        
+       
         Producto producto1 = new Producto(proCodigo1,proNombre1,proDescripcion1,200);
-        ArrayList<LineaFactura> linea1 = new ArrayList<LineaFactura>(Arrays.asList(producto1,2,1));
+        LineaFactura  linea1 = new LineaFactura (producto1,2,1);
         factura.nuevaLinea(linea1);
                 
         Producto producto2 = new Producto(proCodigo2,proNombre2,proDescripcion2,100);

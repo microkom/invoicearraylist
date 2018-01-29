@@ -54,36 +54,23 @@ public class Factura {
     que la ha insertado. En caso contrario (vector lleno) debe devolver -
     1. 
      */
-    public int nuevaLinea(ArrayList<LineaFactura> lineaf) {
+ /*QUITAR LAS COMPROBACIONES DE NULOS*/
+    public void nuevaLinea(LineaFactura lineaf) {
 
-        Iterator<LineaFactura> iterator = lineaf.iterator();
-        LineaFactura lf = null;
-
-        int vector = -1;
-        int i, j;
-        boolean insertado = false;
-
-        j = buscarProducto(lf.getProducto().getNombre());
+        int j;
+        
+        //comprobar existencia del producto
+        j = buscarProducto(lineaf.getProducto().getNombre());
 
         //comprobación de que el producto ya aparece en la factura o no 
         if (j != -1) {
             //suma de cantidades 
-            this.lineas.get(j).setCantidad(lineas.get(j).getCantidad() + lf.getCantidad());
-            this.lineas.get(j).setDescuento(lf.getDescuento());
+            this.lineas.get(j).setCantidad(lineas.get(j).getCantidad() + lineaf.getCantidad());
+            this.lineas.get(j).setDescuento(lineaf.getDescuento());
         } else {
-            //Inserción de objeto en indice de array
-            i = 0;
-            while (iterator.hasNext() && insertado == false) {
-                if (this.lineas.get(i) == null) {
-                    lineas.add(i, lf);
-                    insertado = true;
-                    vector = i;
-
-                }
-                i++;
-            }
+             lineas.add(lineaf);
         }
-        return vector;
+       
     }
     //borrarLineaNumero(int numLinea) : Elimina la linea con el número indicado
 
@@ -91,33 +78,6 @@ public class Factura {
         //borrado del vector recibiendo la posición exacta 
         this.lineas.remove(numLinea);
 
-        //agrupar el contenido del vector al inicio
-        ordenVector();
-    }
-
-    //Agrupación del vector al inicio cuando tiene espacios blancos
-    public void ordenVector() {
-        Iterator<LineaFactura> iterator = lineas.iterator();
-        int i = 0;
-        while (iterator.hasNext()) {
-            //buscar lineas que no están vacías
-            if (lineas.get(i) != null) {
-                boolean found = false;
-
-                //búsqueda del primer null en el array y reemplazo con el último not null
-                Iterator<LineaFactura> iterator2 = lineas.iterator();
-                int j = 0;
-                while (iterator2.hasNext() && found == false) {
-                    if (lineas.get(j) == null) {
-                        lineas.add(j, lineas.get(i));
-                        lineas.remove(i);
-                        found = true;
-                    }
-                    j++;
-                }
-            }
-            i++;
-        }
     }
 
     /*
@@ -127,57 +87,51 @@ public class Factura {
         boolean encontrado = false;
 
         Iterator<LineaFactura> iterator = lineas.iterator();
+        LineaFactura e = null;
 
         int i = 0;
         while (iterator.hasNext() && encontrado == false) {
-            //saltarse las campos del vector vacio
-            if (lineas.get(i) != null) {
-                //busqueda del nombre recibido por parametro con el vector actual en i
-                if (this.lineas.get(i).getProducto().getNombre().equals(nombre)) {
-                    //borrado del contenido de una casilla del vector
-                    this.lineas.remove(i);
-                    encontrado = true;
+            e = iterator.next();
 
-                }
+            //busqueda del nombre recibido por parametro con el vector actual en i
+            if (e.getProducto().getNombre().equals(nombre)) {
+                //buscar indice de objeto
+                i = lineas.indexOf(e);
+                //borrado del contenido de una casilla del vector
+                this.lineas.remove(i);
+                encontrado = true;
             }
-            i++;
         }
-        //ordenVector();
     }
 
-    //importeTotal(): Calcular el importe total.
 //importeTotal(): Calcular el importe total.
     public double importeTotal() {
         double total = 0;
         int i = 0;
 
         Iterator<LineaFactura> iterator = lineas.iterator();
+        LineaFactura e = null;
 
         while (iterator.hasNext()) {
-            //saltarse las campos del vector vacio
+            e = iterator.next();
 
-            if (this.lineas.get(i) != null) {
-                //sumar los precios de todos los productos
-                total += (this.lineas.get(i).getProducto().getPrecio() * this.lineas.get(i).getCantidad());
-            }
-            i++;
+            //sumar los precios de todos los productos
+            total += (e.getProducto().getPrecio() * e.getCantidad());
         }
         return total;
     }
 
     public double descuentoTotal() {
         double desc = 0;
-        int i = 0;
+
         Iterator<LineaFactura> iterator = lineas.iterator();
+        LineaFactura e = null;
 
         while (iterator.hasNext()) {
-            //saltarse las campos del vector vacio
-            if (this.lineas.get(i) != null) {
-                //sumar los descuentos de todos los productos
-                desc += this.lineas.get(i).getProducto().getPrecio() * this.lineas.get(i).getCantidad() * this.lineas.get(i).getDescuento();
+            e = iterator.next();
 
-            }
-            i++;
+            //sumar los descuentos de todos los productos
+            desc += e.getProducto().getPrecio() * e.getCantidad() * e.getDescuento();
         }
         return desc;
     }
@@ -197,21 +151,20 @@ public class Factura {
     public int buscarProducto(String nombre) {
         int numLinea = -1;
         boolean found = false;
-        Iterator<LineaFactura> iterator = lineas.iterator();
 
-        int i = 0;
-        while (iterator.hasNext()) {
-            //saltarse las campos del vector vacio
-            if (lineas.get(i) != null) {
-                //comparar los nombres del producto con el que han pasado por parametro
-                if (lineas.get(i).getProducto().getNombre().equalsIgnoreCase(nombre)) {
-                    //asignar el valor de la linea donde se encontró el nombre a la variable
-                    numLinea = i;
-                    //variable de control para salir del bucle
-                    found = true;
-                }
+        Iterator<LineaFactura> iterator = lineas.iterator();
+        LineaFactura e = null;
+
+        while (iterator.hasNext() && found == true) {
+            e = iterator.next();
+
+            //comparar los nombres del producto con el que han pasado por parametro
+            if (e.getProducto().getNombre().equalsIgnoreCase(nombre)) {
+                //asignar el valor de la linea donde se encontró el nombre a la variable
+                numLinea = lineas.indexOf(e);
+                //variable de control para salir del bucle
+                found = true;
             }
-            i++;
         }
         return numLinea;
     }
@@ -222,56 +175,53 @@ public class Factura {
     después de impuestos         */
     public String imprimir() {
         String prod = "", impreso1 = "", impreso2 = "";
-        int i = 0;
+        
         boolean error = false;
         Iterator<LineaFactura> iterator = lineas.iterator();
-
+        LineaFactura e=null;
+        
         while (iterator.hasNext()) {
-
-            //saltarse las campos del vector vacio
-            if (this.lineas.get(i) != null) {
-
+            e=iterator.next();
                 //descuentos individuales
-                double desc = this.lineas.get(i).getDescuento() * this.lineas.get(i).getProducto().getPrecio();
+                double desc = e.getDescuento() * e.getProducto().getPrecio();
 
                 //descuentos aplicados por producto
-                double descAplic = this.lineas.get(i).getProducto().getPrecio() - desc;
+                double descAplic = e.getProducto().getPrecio() - desc;
 
                 //listado de productos con detalle de precio unitario, descuentos y subtotal
                 //control de cantidades iguales o menores que cero
-                if (this.lineas.get(i).getCantidad() <= 0) {
+                if (e.getCantidad() <= 0) {
                     error = true;
                     prod += texto.errors("cantidad");
-                    prod += this.lineas.get(i).getProducto().getDescripcion() + "\n";
+                    prod += e.getProducto().getDescripcion() + "\n";
 
                     //control de precios iguales o menores que cero
-                } else if (this.lineas.get(i).getProducto().getPrecio() <= 0) {
+                } else if (e.getProducto().getPrecio() <= 0) {
                     error = true;
                     prod += texto.errors("precio");
-                    prod += this.lineas.get(i).getProducto().getDescripcion() + "\n";
+                    prod += e.getProducto().getDescripcion() + "\n";
 
                     //control de descuentos negativos
-                } else if (this.lineas.get(i).getDescuento() < 0) {
+                } else if (e.getDescuento() < 0) {
                     error = true;
                     prod += texto.errors("descuento");
-                    prod += this.lineas.get(i).getProducto().getDescripcion() + "\n";
+                    prod += e.getProducto().getDescripcion() + "\n";
                 } else {
-                    prod += "\t " + (i + 1) + "\t" + this.lineas.get(i).getCantidad() + "\t  "
+                    prod += "\t " + (lineas.indexOf(e) + 1) + "\t" + e.getCantidad() + "\t  "
                             + //nº de item y cantidad
-                            this.lineas.get(i).getProducto().getPrecio() + "\t      "
+                            e.getProducto().getPrecio() + "\t      "
                             + //precio por unidad
-                            this.lineas.get(i).getProducto().getPrecio() * this.lineas.get(i).getCantidad() + "\t"
+                            e.getProducto().getPrecio() * e.getCantidad() + "\t"
                             + //precio 
-                            this.lineas.get(i).getDescuento() * 100 + "\t"
+                            e.getDescuento() * 100 + "\t"
                             + //descuento en porcentaje
-                            desc * this.lineas.get(i).getCantidad() + "\t"
+                            desc * e.getCantidad() + "\t"
                             + //descuento en euros
-                            descAplic * this.lineas.get(i).getCantidad() + "\t";        //subtotal cuenta por unidad
+                            descAplic * e.getCantidad() + "\t";        //subtotal cuenta por unidad
 
-                    prod += this.lineas.get(i).getProducto().getDescripcion() + "\n";   //Descripcion del producto
+                    prod += e.getProducto().getDescripcion() + "\n";   //Descripcion del producto
                 }
-            }
-            i++;
+            
         }
 
         impreso1 = "\n\n\n\n"
