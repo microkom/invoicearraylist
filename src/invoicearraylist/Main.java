@@ -53,8 +53,11 @@ public class Main {
         LineaFactura linea3 = new LineaFactura(producto3,10,10);
         factura.nuevaLinea(linea3);
         
-        LineaFactura linea4 = new LineaFactura(producto3,37,1);
+        LineaFactura linea4 = new LineaFactura(producto3,37,5);
         factura.nuevaLinea(linea4);
+                
+        LineaFactura linea5 = new LineaFactura(producto3,1,5);
+        factura.nuevaLinea(linea5);
                 
         System.out.print(factura.imprimir());
         factura.borrarLineaNumero(0);

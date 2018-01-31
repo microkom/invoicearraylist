@@ -77,7 +77,6 @@ public class Factura {
     public void borrarLineaNumero(int numLinea) {
         //borrado del vector recibiendo la posición exacta 
         this.lineas.remove(numLinea);
-
     }
 
     /*
@@ -155,7 +154,7 @@ public class Factura {
         Iterator<LineaFactura> iterator = lineas.iterator();
         LineaFactura e = null;
 
-        while (iterator.hasNext() && found == true) {
+        while (iterator.hasNext() && found == false) {
             e = iterator.next();
 
             //comparar los nombres del producto con el que han pasado por parametro
