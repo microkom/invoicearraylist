@@ -10,7 +10,7 @@ public class Factura {
     private int numero;
     private Cliente cliente;
     private Fecha fecha;
-    ArrayList<LineaFactura> lineas = new ArrayList<LineaFactura>();
+    private ArrayList<LineaFactura> lineas = new ArrayList<LineaFactura>();
 
     Textos texto = new Textos();
 

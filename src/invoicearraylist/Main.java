@@ -56,7 +56,7 @@ public class Main {
         LineaFactura linea4 = new LineaFactura(producto3,37,5);
         factura.nuevaLinea(linea4);
                 
-        LineaFactura linea5 = new LineaFactura(producto3,1,5);
+        LineaFactura linea5 = new LineaFactura(producto3,3,5);
         factura.nuevaLinea(linea5);
                 
         System.out.print(factura.imprimir());
